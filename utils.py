@@ -1,3 +1,4 @@
+# Import dependencies
 import torch
 import matplotlib.pyplot as plt
 
@@ -30,7 +31,7 @@ def save_loss_plot(train_loss, test_loss):
     """
     plt.figure(figsize=(10, 7))
     plt.plot(train_loss, color='orange', linestyle='-', label='Train loss')
-    plt.plot(test_loss, color='red', linestyle='-', label='test loss')
+    plt.plot(test_loss, color='red', linestyle='-', label='Test loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()

@@ -1,10 +1,13 @@
-# Import libraries
+# Import dependencies
+from datetime import datetime # Imports the datetime class from the datetime module
 from pathlib import Path
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 
 # Hyperparameters
 batch_size = 64
+
+print(f'{datetime.today().strftime("%H:%M:%S")} Loading data.')
 
 # Set directories
 train_dir = Path(r'C:\Users\bcrozat\kDrive\Coding\svrrc-mri-classifier\data\train')
@@ -47,6 +50,4 @@ images, labels = next(iter(train_loader))
 print(f'Batch shape: {images.shape}')
 
 # Indicate end
-print(f'End.')
-
-
+print(f'Data loaded.')

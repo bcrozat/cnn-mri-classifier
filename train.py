@@ -21,7 +21,7 @@ args = vars(parser.parse_args())
 learning_rate = 1e-3
 epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
-print(f'device: {device}\n')
+print(f'Device: {device}\n')
 model = CNNModel().to(device)
 print(model)
 
@@ -133,3 +133,16 @@ print('Training complete.')
 # Execute script
 # Execute the following command in the terminal:
 # python train.py --epochs 10
+
+# Note: Around 50 epochs looks like a sweet spot for V1.
+# Warning: Training takes very long (on CPU)!
+
+# TODO: Try deeper networks
+# TODO: Improve evaluation metrics (add confusion matrix, ROC curve, etc.)
+# TODO: Add early stopping
+# TODO: Add model checkpointing
+# TODO: Add learning rate scheduler
+# TODO: Add hyperparameter tuning
+# TODO: Add data augmentation
+# TODO: Test transfer learning
+# TODO: Add tensorboard logging

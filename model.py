@@ -1,8 +1,9 @@
+# Import dependencies
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class CNNModel(nn.Module):
+class CNNModel(nn.Module): # V1
     def __init__(self):
         super(CNNModel, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, 5)
