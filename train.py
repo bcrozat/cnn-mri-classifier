@@ -1,10 +1,12 @@
-import torch
+# Import dependencies
 import argparse # Allows to provide input parameters (parse arguments) from the command line instead of hardcoding them
-import torch.nn as nn
-import torch.optim as optim
 import time
 from tqdm.auto import tqdm
+import torch
+import torch.nn as nn
+import torch.optim as optim
 
+# Import custom modules
 from model import CNNModel
 from datasets import train_loader, test_loader
 from utils import save_model, save_acc_plot, save_loss_plot
@@ -64,6 +66,8 @@ def train(model, train_loader, optimizer, loss_function):
         predictions = (outputs > 0.5).float() # Apply threshold to get binary predictions
         print(predictions)
         train_correct += (predictions == labels).sum().item()
+        # Backpropagation
+        loss.backward()
         # Update optimizer / parameters / weights
         optimizer.step()
     # Loss and accuracy for the complete epoch
@@ -84,7 +88,7 @@ def test(model, test_loader, loss_function):
             image, labels = data
             image = image.to(device)
             labels = labels.to(device).float()  # Convert to float for BCELoss
-            # forward pass
+            # Forward pass
             outputs = model(image)
             # Compute loss
             loss = loss_function(outputs, labels)
@@ -105,10 +109,8 @@ train_acc, test_acc = [], []
 print('Training started.')
 for epoch in range(epochs):
     print(f"Epoch {epoch + 1} of {epochs}")
-    train_epoch_loss, train_epoch_acc = train(model, train_loader,
-                                              optimizer, loss_function)
-    test_epoch_loss, test_epoch_acc = test(model, test_loader,
-                                                 loss_function)
+    train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, loss_function)
+    test_epoch_loss, test_epoch_acc = test(model, test_loader, loss_function)
     train_loss.append(train_epoch_loss)
     test_loss.append(test_epoch_loss)
     train_acc.append(train_epoch_acc)
@@ -116,7 +118,7 @@ for epoch in range(epochs):
     print(f"Training loss: {train_epoch_loss:.3f}, training acc: {train_epoch_acc:.3f}")
     print(f"Validation loss: {test_epoch_loss:.3f}, validation acc: {test_epoch_acc:.3f}")
     print('-' * 50)
-    time.sleep(5)
+    # time.sleep(5)
 
 # Save accuracy plot
 save_acc_plot(train_acc, test_acc)
