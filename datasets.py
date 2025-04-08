@@ -10,18 +10,18 @@ batch_size = 64
 print(f'{datetime.today().strftime("%H:%M:%S")} Loading data.')
 
 # Set directories
-train_dir = Path(r'C:\Users\bcrozat\kDrive\Coding\svrrc-mri-classifier\data\train')
-test_dir = Path(r'C:\Users\bcrozat\kDrive\Coding\svrrc-mri-classifier\data\test')
+train_dir = Path(r'D:\Data\mri-brain-scans\train')
+test_dir = Path(r'D:\Data\mri-brain-scans\test')
 
 # Define transformation for data preparation & augmentation
 train_transform = transforms.Compose([
-    transforms.Resize((224, 224)), # Resize images to 224x224 (ResNet standard size)
+    transforms.Resize((128, 128)), # Resize images to 224x224 (ResNet standard size)
     transforms.ToTensor(), # Convert image to tensor
     transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
 ])
 
 test_transform = transforms.Compose([
-    transforms.Resize((224, 224)), # Resize images to 224x224 (ResNet standard size)
+    transforms.Resize((128, 128)), # Resize images to 224x224 (ResNet standard size)
     transforms.ToTensor(), # Convert image to tensor
     transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
 ])

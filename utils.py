@@ -2,7 +2,7 @@
 import torch
 import matplotlib.pyplot as plt
 
-def save_model(epochs, model, optimizer, loss_function):
+def save_model(model, tag, epochs, optimizer, criterion):
     """
     Function to save the trained model.
     """
@@ -10,10 +10,10 @@ def save_model(epochs, model, optimizer, loss_function):
                 'epoch': epochs,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
-                'loss': loss_function,
-                }, 'outputs/model.pth')
+                'loss': criterion,
+                }, f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
 
-def save_acc_plot(train_acc, test_acc):
+def save_acc_plot(train_acc, test_acc, model, tag, epochs):
     """
     Function to save the accuracy plot.
     """
@@ -23,9 +23,9 @@ def save_acc_plot(train_acc, test_acc):
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
-    plt.savefig('outputs/accuracy.png')
+    plt.savefig(f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-accuracy.png')
 
-def save_loss_plot(train_loss, test_loss):
+def save_loss_plot(train_loss, test_loss, model, tag, epochs):
     """
     Function to save the loss plot.
     """
@@ -35,4 +35,4 @@ def save_loss_plot(train_loss, test_loss):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig('outputs/loss.png')
+    plt.savefig(f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-loss.png')

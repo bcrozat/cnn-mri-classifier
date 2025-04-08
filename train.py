@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 # Import custom modules
-from model import CNNModel
+from model import CNN
 from datasets import train_loader, test_loader
 from utils import save_model, save_acc_plot, save_loss_plot
 
@@ -15,6 +15,8 @@ from utils import save_model, save_acc_plot, save_loss_plot
 parser = argparse.ArgumentParser() # Initialize argument parser
 parser.add_argument('-e', '--epochs', type=int, default=10,
     help='number of epochs to train the model for')
+parser.add_argument('-t', '--tag', type=str, default=10,
+    help='model tag to save')
 args = vars(parser.parse_args())
 
 # Parameters
@@ -22,16 +24,18 @@ learning_rate = 1e-3
 epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
-model = CNNModel().to(device)
+model = CNN().to(device)
+tag = args['tag']
 print(model)
+print(f'Tag: {tag}')
 
 # Optimizer
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Loss function (criterion)
-loss_function = nn.BCELoss() # nn.CrossEntropyLoss() for multi-class classification, nn.BCELoss() for binary classification
+criterion = nn.BCELoss() # nn.CrossEntropyLoss() for multi-class classification, nn.BCELoss() for binary classification
 
-# Train function # TODO: to modify
+# Train function
 #         _, preds = torch.max(outputs.data, 1)
 #         train_running_correct += (preds == labels).sum().item()
 #         # backpropagation
@@ -43,9 +47,8 @@ loss_function = nn.BCELoss() # nn.CrossEntropyLoss() for multi-class classificat
 #     epoch_acc = 100. * (train_running_correct / len(trainloader.dataset))
 #     return epoch_loss, epoch_acc
 
-# GPT train loop
 # Train function # TODO: to modify
-def train(model, train_loader, optimizer, loss_function):
+def train(model, train_loader, optimizer, criterion):
     model.train()
     print('Training...')
     train_loss = 0.0
@@ -60,7 +63,7 @@ def train(model, train_loader, optimizer, loss_function):
         # Forward pass
         outputs = model(image)
         # Compute loss
-        loss = loss_function(outputs, labels)
+        loss = criterion(outputs, labels)
         train_loss += loss.item()
         # Compute accuracy
         predictions = (outputs > 0.5).float() # Apply threshold to get binary predictions
@@ -76,7 +79,7 @@ def train(model, train_loader, optimizer, loss_function):
     return epoch_loss, epoch_acc
 
 # Test function
-def test(model, test_loader, loss_function):
+def test(model, test_loader, criterion):
     model.eval()
     print('Testing')
     test_loss = 0.0
@@ -91,7 +94,7 @@ def test(model, test_loader, loss_function):
             # Forward pass
             outputs = model(image)
             # Compute loss
-            loss = loss_function(outputs, labels)
+            loss = criterion(outputs, labels)
             test_loss += loss.item()
             # Compute accuracy
             predictions = (outputs > 0.5).float()  # Apply threshold to get binary predictions
@@ -109,8 +112,8 @@ train_acc, test_acc = [], []
 print('Training started.')
 for epoch in range(epochs):
     print(f"Epoch {epoch + 1} of {epochs}")
-    train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, loss_function)
-    test_epoch_loss, test_epoch_acc = test(model, test_loader, loss_function)
+    train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, criterion)
+    test_epoch_loss, test_epoch_acc = test(model, test_loader, criterion)
     train_loss.append(train_epoch_loss)
     test_loss.append(test_epoch_loss)
     train_acc.append(train_epoch_acc)
@@ -121,28 +124,30 @@ for epoch in range(epochs):
     # time.sleep(5)
 
 # Save accuracy plot
-save_acc_plot(train_acc, test_acc)
+save_acc_plot(train_acc=train_acc, test_acc=test_acc, model=model, tag=tag, epochs=epochs)
 
 # Save loss plot
-save_loss_plot(train_loss, test_loss)
+save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag, epochs=epochs)
 
 # save the trained model weights
-save_model(epochs, model, optimizer, loss_function)
+save_model(model=model, tag=tag, epochs=epochs, optimizer=optimizer, criterion=criterion)
 print('Training complete.')
 
 # Execute script
 # Execute the following command in the terminal:
-# python train.py --epochs 10
+# python train.py --epochs 10 --tag v4.2
 
 # Note: Around 50 epochs looks like a sweet spot for V1.
 # Warning: Training takes very long (on CPU)!
 
-# TODO: Try deeper networks
+# TODO: Try deeper networks > unable to reach more than 5 conv layers because the output size becomes too small
+#  (currently learning deepl learning on datacamp to fix architecture)
+# Add preprocessing: CLHE, canny edge detection, normalization, etc.
 # TODO: Improve evaluation metrics (add confusion matrix, ROC curve, etc.)
 # TODO: Add early stopping
 # TODO: Add model checkpointing
 # TODO: Add learning rate scheduler
 # TODO: Add hyperparameter tuning
 # TODO: Add data augmentation
-# TODO: Test transfer learning
+# TODO: Test transfer learning (commonly done; models are rarely trained from scratch)
 # TODO: Add tensorboard logging
