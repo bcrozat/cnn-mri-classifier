@@ -132,22 +132,3 @@ save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag,
 # save the trained model weights
 save_model(model=model, tag=tag, epochs=epochs, optimizer=optimizer, criterion=criterion)
 print('Training complete.')
-
-# Execute script
-# Execute the following command in the terminal:
-# python train.py --epochs 10 --tag v4.2
-
-# Note: Around 50 epochs looks like a sweet spot for V1.
-# Warning: Training takes very long (on CPU)!
-
-# TODO: Try deeper networks > unable to reach more than 5 conv layers because the output size becomes too small
-#  (currently learning deepl learning on datacamp to fix architecture)
-# Add preprocessing: CLHE, canny edge detection, normalization, etc.
-# TODO: Improve evaluation metrics (add confusion matrix, ROC curve, etc.)
-# TODO: Add early stopping
-# TODO: Add model checkpointing
-# TODO: Add learning rate scheduler
-# TODO: Add hyperparameter tuning
-# TODO: Add data augmentation
-# TODO: Test transfer learning (commonly done; models are rarely trained from scratch)
-# TODO: Add tensorboard logging
