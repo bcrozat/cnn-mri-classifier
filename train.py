@@ -11,8 +11,6 @@ from model import CNN
 from datasets import train_loader, test_loader
 from utils import save_model, save_acc_plot, save_loss_plot
 
-#TODO: fix model not learning
-
 # Start timer
 start_time = time.time()
 
