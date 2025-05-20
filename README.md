@@ -9,7 +9,7 @@ This projet aims at exploring convolutional neural networks to classify MRI brai
 - [x] Test different learning rates &rarr; done, 1e-3 or 1-e4 seem to be the best
 - Add batch normalization
 - [x] (Re)Add pooling layers
-- [x] Add dropouts layers # TODO: try only 1 dropout layer
+- [x] Add dropouts layers # TODO: try only 1 dropout layer and 0.2, 03, 0.5 rates
 - [ ] (Add preprocessing: CLHE, canny edge detection, normalization, etc) &rarr; probably unecessary since most of them are convolutional approaches anyway &rarr; check if it improves performance and/or learning though
 - [x] Add data augmentation # TODO: continue, experiment
 - [ ] Test transfer learning (commonly done; models are rarely trained from scratch)
