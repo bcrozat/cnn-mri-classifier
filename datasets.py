@@ -10,8 +10,8 @@ batch_size = 64
 print(f'{datetime.today().strftime("%H:%M:%S")} Loading data.')
 
 # Set directories
-train_dir = Path(r'D:\Data\mri-brain-scans\train')
-test_dir = Path(r'D:\Data\mri-brain-scans\test')
+train_dir = Path(r'data\train') # D:\Data\mri-brain-scans\train on Framework
+test_dir = Path(r'data\test') # D:\Data\mri-brain-scans\test on Framework
 
 # Define transformation for data preparation & augmentation
 train_transform = transforms.Compose([

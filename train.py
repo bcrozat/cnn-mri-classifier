@@ -11,6 +11,11 @@ from model import CNN
 from datasets import train_loader, test_loader
 from utils import save_model, save_acc_plot, save_loss_plot
 
+#TODO: fix model not learning
+
+# Start timer
+start_time = time.time()
+
 # Set up argument parser
 parser = argparse.ArgumentParser() # Initialize argument parser
 parser.add_argument('-e', '--epochs', type=int, default=10,
@@ -20,7 +25,7 @@ parser.add_argument('-t', '--tag', type=str, default=10,
 args = vars(parser.parse_args())
 
 # Parameters
-learning_rate = 1e-3
+learning_rate = 1e-3 # Best learning rate seems to be 1e-3 or 1e-4
 epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
@@ -34,18 +39,6 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Loss function (criterion)
 criterion = nn.BCELoss() # nn.CrossEntropyLoss() for multi-class classification, nn.BCELoss() for binary classification
-
-# Train function
-#         _, preds = torch.max(outputs.data, 1)
-#         train_running_correct += (preds == labels).sum().item()
-#         # backpropagation
-#         loss.backward()
-#         # update the optimizer parameters
-#         optimizer.step()
-#     # loss and accuracy for the complete epoch
-#     epoch_loss = train_running_loss / counter
-#     epoch_acc = 100. * (train_running_correct / len(trainloader.dataset))
-#     return epoch_loss, epoch_acc
 
 # Train function # TODO: to modify
 def train(model, train_loader, optimizer, criterion):
@@ -129,6 +122,11 @@ save_acc_plot(train_acc=train_acc, test_acc=test_acc, model=model, tag=tag, epoc
 # Save loss plot
 save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag, epochs=epochs)
 
-# save the trained model weights
+# Save the trained model weights
 save_model(model=model, tag=tag, epochs=epochs, optimizer=optimizer, criterion=criterion)
 print('Training complete.')
+
+# Print elapsed time
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f'Training time: {elapsed_time:.2f} seconds')
