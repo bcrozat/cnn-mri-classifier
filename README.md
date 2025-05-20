@@ -4,16 +4,20 @@ This projet aims at exploring convolutional neural networks to classify MRI brai
 
 ## Todos
 
-- [ ] Try deeper networks > unable to reach more than 5 conv layers because the output size becomes too small > keep learning deepl learning to explore architecture possibilities
+- [ ] # TODO: fix model not learning (again)
+- [x] Try deeper networks &rarr; done up to 5 conv layers &rarr; unable add more because the output size becomes too small > keep learning deepl learning to explore architecture possibilities
+- [x] Test different learning rates &rarr; done, 1e-3 or 1-e4 seem to be the best
+- Add batch normalization
+- [x] (Re)Add pooling layers
+- [x] Add dropouts layers # TODO: try only 1 dropout layer
 - [ ] (Add preprocessing: CLHE, canny edge detection, normalization, etc) &rarr; probably unecessary since most of them are convolutional approaches anyway &rarr; check if it improves performance and/or learning though
-- [ ] Improve evaluation metrics (add confusion matrix, ROC curve, etc.) &rarr; use torchmetrics / lightningai
-- [ ] Add dropouts
+- [x] Add data augmentation # TODO: continue, experiment
+- [ ] Test transfer learning (commonly done; models are rarely trained from scratch)
 - [ ] Add early stopping
 - [ ] Add model checkpointing
 - [ ] Add learning rate scheduler
 - [ ] Add hyperparameter tuning
-- [ ] Add data augmentation
-- [ ] Test transfer learning (commonly done; models are rarely trained from scratch)
+- [ ] Improve evaluation metrics (add confusion matrix, ROC curve, etc.) &rarr; use torchmetrics / lightningai
 - [ ] Add tensorboard logging
 
 ## Notes
@@ -48,8 +52,33 @@ Mistakes I've made:
 - Learning rate was too high or too low ()
 - Pytorch CUDA was not installed &rarr; it must be installed via a special install using pip (not conda) &rarr; training was using CPU instead of (Nvidia) GPU
 - Forgot to add squeeze() to the final output of the model &rarr; it was returning a 2D tensor instead of a 1D tensor &rarr; this caused an error when calculating the loss
+- Added multiple dropout layers after each conv layer &rarr; this might have been too much &rarr; it caused the model to learn very slowly &rarr; lowering the dropout rate from 0.5 to 0.3 or only adding one dropout layer after the final conv layer might be enough
+
 
 ## Log
+
+note: maybe lower dropout rate or to 0.3 reduce dropout to a single layer after the final conv layer
+
+--epochs 40 --tag 3cl+pool+drop
+Training loss: 0.058, training acc: 98.014
+Validation loss: 0.627, validation acc: 89.848
+--------------------------------------------------
+Training complete.
+Training time: 607.92 seconds
+
+--epochs 50 --tag 3cl+pool+drop
+Training loss: 13.767, training acc: 86.237
+Validation loss: 18.450, validation acc: 73.350
+--------------------------------------------------
+Training complete.
+Training time: 789.68 seconds
+
+--tag 3cl+pool+drop e:30
+Training loss: 0.104, training acc: 96.307
+Validation loss: 0.801, validation acc: 77.919
+--------------------------------------------------
+Training complete.
+Training time: 454.29 seconds
 
 **note: 4 or 5 conv layers seem to improve learning curve compared to 3**
 
