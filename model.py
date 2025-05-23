@@ -16,35 +16,33 @@ class CNN(nn.Module): # V5
         self.conv5 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)
         self.bn5 = nn.BatchNorm2d(num_features=256)
 
-        self.fc1 = nn.Linear(64*16*16, 1)   # Output a single value for binary classification # Use (256*4*4) for 5 convolutional layers, (128*8*8) for 4, (64*16*16) for 3
+        self.fc1 = nn.Linear(128*8*8, 1)   # Output a single value for binary classification # Use (256*4*4) for 5 convolutional layers, (128*8*8) for 4, (64*16*16) for 3
         self.elu = nn.ELU() # Exponential Linear Unit activation functio
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0) # 2x2 max pooling layer with stride 2 which reduces the spatial dimensions by half
-        self.dropout = nn.Dropout(p=0.5) # Dropout layer with 50% probability of zeroing out some elemets to prevent overfitting
+        self.dropout = nn.Dropout(p=0.2) # Dropout layer with 20% probability of zeroing out some elemets to prevent overfitting
 
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.elu(x)
         x = self.pool(x)
-        x = self.dropout(x)
         x = self.conv2(x)
         x = self.bn2(x)
         x = self.elu(x)
         x = self.pool(x)
-        x = self.dropout(x)
         x = self.conv3(x)
         x = self.bn3(x)
         x = self.elu(x)
         x = self.pool(x)
-        x = self.dropout(x)
-        # x = self.conv4(x)
-        # x = self.bn4(x)
-        # x = self.elu(x)
-        # x = self.pool(x)
+        x = self.conv4(x)
+        x = self.bn4(x)
+        x = self.elu(x)
+        x = self.pool(x)
         # x = self.conv5(x)
         # x = self.bn5(x)
         # x = self.elu(x)
         # x = self.pool(x)
+        x = self.dropout(x)
         bs, _, _, _ = x.shape
         x = x.view(bs, -1)  # Flatten the tensor to feed it into the fully connected layer
         x = self.fc1(x)
