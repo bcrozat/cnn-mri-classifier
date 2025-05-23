@@ -4,21 +4,20 @@ This projet aims at exploring convolutional neural networks to classify MRI brai
 
 ## Todos
 
-- [ ] # TODO: fix model not learning (again)
 - [x] Try deeper networks &rarr; done up to 5 conv layers &rarr; unable add more because the output size becomes too small > keep learning deepl learning to explore architecture possibilities
 - [x] Test different learning rates &rarr; done, 1e-3 or 1-e4 seem to be the best
 - Add batch normalization
 - [x] (Re)Add pooling layers
-- [x] Add dropouts layers # TODO: try only 1 dropout layer and 0.2, 03, 0.5 rates
+- [x] Add dropouts layers
+- [x] (Add data augmentation)
 - [ ] (Add preprocessing: CLHE, canny edge detection, normalization, etc) &rarr; probably unecessary since most of them are convolutional approaches anyway &rarr; check if it improves performance and/or learning though
-- [x] Add data augmentation # TODO: continue, experiment
 - [ ] Test transfer learning (commonly done; models are rarely trained from scratch)
-- [ ] Add early stopping
-- [ ] Add model checkpointing
-- [ ] Add learning rate scheduler
-- [ ] Add hyperparameter tuning
-- [ ] Improve evaluation metrics (add confusion matrix, ROC curve, etc.) &rarr; use torchmetrics / lightningai
-- [ ] Add tensorboard logging
+- [ ] (Add early stopping)
+- [ ] (Add model checkpointing)
+- [ ] (Add learning rate scheduler)
+- [ ] (Add hyperparameter tuning)
+- [ ] (Improve evaluation metrics (add confusion matrix, ROC curve, etc.) &rarr; use torchmetrics / lightningai)
+- [ ] (Add tensorboard logging)
 
 ## Notes
 
@@ -26,15 +25,12 @@ data & output folders are omitted to save space
 
 ## Installation
 
-install cuda !
+! install cuda
 `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128`
 
 ## Models
 
-CNNModel: 4 conv layers, 1 fc layer
-CNNModelV2: 5 conv layers, 1 fc layer
-CNNModel7: 7 conv layers, 1 fc layer
-CNN_MRI: ...
+
 
 ## Training
 
@@ -52,10 +48,41 @@ Mistakes I've made:
 - Learning rate was too high or too low ()
 - Pytorch CUDA was not installed &rarr; it must be installed via a special install using pip (not conda) &rarr; training was using CPU instead of (Nvidia) GPU
 - Forgot to add squeeze() to the final output of the model &rarr; it was returning a 2D tensor instead of a 1D tensor &rarr; this caused an error when calculating the loss
-- Added multiple dropout layers after each conv layer &rarr; this might have been too much &rarr; it caused the model to learn very slowly &rarr; lowering the dropout rate from 0.5 to 0.3 or only adding one dropout layer after the final conv layer might be enough
-
+- Added too much dropout: too many (one per convolutional layers so 3-5) and too high (0.5) &rarr; it caused the model to stop learning (too much destruction)
 
 ## Log
+
+python train.py --epochs 50 --tag 4cl+pools-1drop02-notrfs
+Training loss: 0.000, training acc: 100.000
+Validation loss: 0.754, validation acc: 91.371
+--------------------------------------------------
+Training complete.
+Training time: 766.23 seconds
+
+
+train.py --epochs 100 --tag 4cl+pools-1drop02-trfsflipsrotate
+Training loss: 0.010, training acc: 99.512
+Validation loss: 0.731, validation acc: 88.579
+--------------------------------------------------
+Training complete.
+Training time: 1840.31 seconds
+
+python train.py --epochs 50 --tag 4cl+pools-1drop01-trfsflipsrotate
+Training loss: 0.030, training acc: 98.676
+Validation loss: 0.304, validation acc: 90.355
+--------------------------------------------------
+Training complete.
+Training time: 809.16 seconds
+
+python train.py --epochs 50 --tag 3cl+pools-1drop01-notrsf
+Training loss: 0.000, training acc: 100.000
+Validation loss: 0.499, validation acc: 91.624
+--------------------------------------------------
+Training complete.
+Training time: 1241.13 seconds
+
+python train.py --epochs 50 --tag 3cl+pools-1drop01-trfs-flip-rotate
+?
 
 note: maybe lower dropout rate or to 0.3 reduce dropout to a single layer after the final conv layer
 
@@ -129,3 +156,5 @@ Training time: 502.65 seconds
 ## Resources
 
 - https://debuggercafe.com/pytorch-imagefolder-for-training-cnn-models/
+- https://streamlit.io/
+- https://www.gradio.app/
