@@ -10,8 +10,9 @@ This projet aims at exploring convolutional neural networks to classify MRI brai
 - [x] (Re)Add pooling layers
 - [x] Add dropouts layers
 - [x] (Add data augmentation)
-- [ ] (Add preprocessing: CLHE, canny edge detection, normalization, etc) &rarr; probably unecessary since most of them are convolutional approaches anyway &rarr; check if it improves performance and/or learning though
+- [ ] Fix load & save model
 - [ ] Test transfer learning (commonly done; models are rarely trained from scratch)
+- [ ] (Add preprocessing: CLHE, canny edge detection, normalization, etc) &rarr; probably unecessary since most of them are convolutional approaches anyway &rarr; check if it improves performance and/or learning though
 - [ ] (Add early stopping)
 - [ ] (Add model checkpointing)
 - [ ] (Add learning rate scheduler)
