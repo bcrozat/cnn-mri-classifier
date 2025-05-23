@@ -16,10 +16,10 @@ test_dir = Path(r'data\test') # D:\Data\mri-brain-scans\test on Framework
 # Define transformation for data preparation & augmentation
 train_transform = transforms.Compose([
     transforms.Resize((128, 128)), # Resize images to 224x224 (ResNet standard size)
-    transforms.RandomHorizontalFlip(), # Randomly flip images horizontally
-    transforms.RandomVerticalFlip(), # Randomly flip images vertically
+    # transforms.RandomHorizontalFlip(), # Randomly flip images horizontally
+    # transforms.RandomVerticalFlip(), # Randomly flip images vertically
     # transforms.RandomRotation(10), # Randomly rotate images by 10 degrees
-    # transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.1), # Randomly change brightness, contrast, saturation and hue
+    # transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1), # Randomly change brightness, contrast, saturation
     transforms.ToTensor(),  # Convert image to tensor
     transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
 ])
@@ -54,4 +54,4 @@ images, labels = next(iter(train_loader))
 print(f'Batch shape: {images.shape}')
 
 # Indicate end
-print(f'Data loaded.')
+print(f'{datetime.today().strftime("%H:%M:%S")} Data loaded.')
