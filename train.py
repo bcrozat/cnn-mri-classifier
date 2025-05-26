@@ -9,7 +9,7 @@ import torch.optim as optim
 # Import custom modules
 from model import CNN
 from datasets import train_loader, test_loader
-from utils import save_model, save_acc_plot, save_loss_plot
+from utils import save_acc_plot, save_loss_plot
 
 # Start timer
 start_time = time.time()
@@ -28,6 +28,7 @@ epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
 model = CNN().to(device)
+# model.load_state_dict(torch.load('models/cnn-model.pth')) # Load model weights
 tag = args['tag']
 print(model)
 print(f'Tag: {tag}')
@@ -38,7 +39,7 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 # Loss function (criterion)
 criterion = nn.BCELoss() # nn.CrossEntropyLoss() for multi-class classification, nn.BCELoss() for binary classification
 
-# Train function # TODO: to modify
+# Train function
 def train(model, train_loader, optimizer, criterion):
     model.train()
     print('Training...')
@@ -121,7 +122,7 @@ save_acc_plot(train_acc=train_acc, test_acc=test_acc, model=model, tag=tag, epoc
 save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag, epochs=epochs)
 
 # Save the trained model weights
-save_model(model=model, tag=tag, epochs=epochs, optimizer=optimizer, criterion=criterion)
+torch.save(model.state_dict(), f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
 print('Training complete.')
 
 # Print elapsed time

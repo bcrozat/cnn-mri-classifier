@@ -2,17 +2,6 @@
 import torch
 import matplotlib.pyplot as plt
 
-def save_model(model, tag, epochs, optimizer, criterion):
-    """
-    Function to save the trained model.
-    """
-    torch.save({
-                'epoch': epochs,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': criterion,
-                }, f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
-
 def save_acc_plot(train_acc, test_acc, model, tag, epochs):
     """
     Function to save the accuracy plot.
