@@ -28,7 +28,7 @@ epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
 model = CNN().to(device)
-# model.load_state_dict(torch.load('models/cnn-model.pth')) # Load model weights
+# model.load_state_dict(torch.load('models/CNN-4cl+pools-1drop01-notrfs-5e-model.pth')) # Load model weights
 tag = args['tag']
 print(model)
 print(f'Tag: {tag}')
@@ -122,7 +122,7 @@ save_acc_plot(train_acc=train_acc, test_acc=test_acc, model=model, tag=tag, epoc
 save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag, epochs=epochs)
 
 # Save the trained model weights
-torch.save(model.state_dict(), f'models/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
+torch.save(model.state_dict(), f'models/{model.__class__.__name__}-{tag}-{epochs}e.pth')
 print('Training complete.')
 
 # Print elapsed time
