@@ -5,11 +5,15 @@ import torch
 from model import CNN
 from torchvision import transforms
 
+print(f'Launching app.')
+
 # Load model
-torch.serialization.add_safe_globals([torch.nn.modules.loss.BCELoss])
-model = CNN()
-model.load_state_dict(torch.load('models/cnn-v1-5e-model.pth')) # TODO: fix load & save model
+device = ('cuda' if torch.cuda.is_available() else 'cpu')
+print(f'Device: {device}\n')
+model = CNN().to(device)
+model.load_state_dict(torch.load('models/CNN-4cl+pools-1drop01-notrfs-5e-model.pth'))  # Load model weights
 model.eval()
+print(f'Model loaded.')
 
 # Define transform
 transform = transforms.Compose([
@@ -19,21 +23,21 @@ transform = transforms.Compose([
 ])
 
 # Load test image
-img_test = 'data/test/tumor/glioma_tumor/image(1).jpg'
-#
-#
-# # Define the transforms - update according to your training transforms
-# image = Image.open('test.png')
-# image = test_transform(image)
-# # image = image.unsqueeze(0)  # Add batch dimension
-# #
-# # def classify_mri(img):
-# #     return model(img)
-# #
-# # demo = gr.Interface(
-# #     fn=greet,
-# #     inputs=["text", "slider"],
-# #     outputs=["text"],
-# # )
-# #
-# # demo.launch()
+# img_path = 'data/test/no_tumor/image(1).jpg'
+
+def classify_mri(img_path):
+    img = Image.open(img_path)
+    tensor = transform(img).unsqueeze(0).to(device)
+    prediction = model(tensor).item()
+    return prediction
+
+demo = gr.Interface(
+    fn=classify_mri,
+    inputs=gr.Image(type='filepath', label='Upload MRI Image'),
+    outputs=gr.Number(label='Tumor probability', precision=4),
+    title='Brain Tumor Detector',
+    description='This application process a MRI to detect if it contains a tumor or not.')
+
+demo.launch()
+
+print(f'App launched. Open http://127.0.0.1:7860.')
