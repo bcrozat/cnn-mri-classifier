@@ -122,7 +122,7 @@ save_acc_plot(train_acc=train_acc, test_acc=test_acc, model=model, tag=tag, epoc
 save_loss_plot(train_loss=train_loss, test_loss=test_loss, model=model, tag=tag, epochs=epochs)
 
 # Save the trained model weights
-torch.save(model.state_dict(), f'outputs/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
+torch.save(model.state_dict(), f'models/{model.__class__.__name__}-{tag}-{epochs}e-model.pth')
 print('Training complete.')
 
 # Print elapsed time
