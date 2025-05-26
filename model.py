@@ -19,7 +19,7 @@ class CNN(nn.Module): # V5
         self.fc1 = nn.Linear(128*8*8, 1)   # Output a single value for binary classification # Use (256*4*4) for 5 convolutional layers, (128*8*8) for 4, (64*16*16) for 3
         self.elu = nn.ELU() # Exponential Linear Unit activation functio
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0) # 2x2 max pooling layer with stride 2 which reduces the spatial dimensions by half
-        self.dropout = nn.Dropout(p=0.2) # Dropout layer with 20% probability of zeroing out some elemets to prevent overfitting
+        self.dropout = nn.Dropout(p=0.1) # Dropout layer with 20% probability of zeroing out some elemets to prevent overfitting
 
     def forward(self, x):
         x = self.conv1(x)
