@@ -53,6 +53,26 @@ Mistakes I've made:
 
 ## Log
 
+### RN50()
+
+python train.py --epochs 30 --tag rn50
+Training loss: 0.000, training acc: 100.000
+Validation loss: 0.708, validation acc: 91.371
+--------------------------------------------------
+Training complete.
+Training time: 2140.50 seconds
+
+
+python train.py --epochs 5 --tag rn50
+Training loss: 0.023, training acc: 99.094
+Validation loss: 2.234, validation acc: 37.817
+--------------------------------------------------
+Training complete.
+Training time: 305.19 seconds
+
+
+### CNN()
+
 python train.py --epochs 50 --tag 4cl+pools-1drop02-notrfs
 Training loss: 0.000, training acc: 100.000
 Validation loss: 0.754, validation acc: 91.371
