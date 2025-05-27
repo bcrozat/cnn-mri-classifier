@@ -7,8 +7,8 @@ import torch.nn as nn
 import torch.optim as optim
 
 # Import custom modules
-from model import CNN
 from datasets import train_loader, test_loader
+from model import CNN, RN50
 from utils import save_acc_plot, save_loss_plot
 
 # Start timer
@@ -27,7 +27,8 @@ learning_rate = 1e-3 # Best learning rate seems to be 1e-3 or 1e-4
 epochs = args['epochs']
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
-model = CNN().to(device)
+model = RN50().to(device) # Use ResNet50 model
+# model = CNN().to(device) # Use custom CNN model
 # model.load_state_dict(torch.load('models/CNN-4cl+pools-1drop01-notrfs-5e-model.pth')) # Load model weights
 tag = args['tag']
 print(model)

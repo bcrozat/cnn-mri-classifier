@@ -2,7 +2,8 @@
 from datetime import datetime # Imports the datetime class from the datetime module
 from pathlib import Path
 from torchvision import datasets, transforms
-from torch.utils.data import Dataset, DataLoader
+from torchvision.models import ResNet50_Weights
+from torch.utils.data import DataLoader
 
 # Hyperparameters
 batch_size = 64
@@ -13,22 +14,23 @@ print(f'{datetime.today().strftime("%H:%M:%S")} Loading data.')
 train_dir = Path(r'data\train') # D:\Data\mri-brain-scans\train on Framework
 test_dir = Path(r'data\test') # D:\Data\mri-brain-scans\test on Framework
 
-# Define transformation for data preparation & augmentation
-train_transform = transforms.Compose([
-    transforms.Resize((128, 128)), # Resize images to 224x224 (ResNet standard size)
-    # transforms.RandomHorizontalFlip(), # Randomly flip images horizontally
-    # transforms.RandomVerticalFlip(), # Randomly flip images vertically
-    # transforms.RandomRotation(10), # Randomly rotate images by 10 degrees
-    # transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1), # Randomly change brightness, contrast, saturation
-    transforms.ToTensor(),  # Convert image to tensor
-    transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
-])
+# Set transformations for ResNet50
+weights = ResNet50_Weights.DEFAULT
+train_transform = weights.transforms()
+test_transform = weights.transforms()
 
-test_transform = transforms.Compose([
-    transforms.Resize((128, 128)), # Resize images (ResNet standard size: 224x224)
-    transforms.ToTensor(), # Convert image to tensor
-    transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
-])
+# Define transformation for data preparation & augmentation
+# train_transform = transforms.Compose([ # Used for CNN() model
+#     transforms.Resize((128, 128)), # Resize images
+#     transforms.ToTensor(),  # Convert image to tensor
+#     transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
+# ])
+#
+# test_transform = transforms.Compose([
+#     transforms.Resize((128, 128)), # Resize images
+#     transforms.ToTensor(), # Convert image to tensor
+#     transforms.Normalize(mean=[0.5], std=[0.5]) # Normalize (adjust based on dataset)
+# ])
 
 # Load datasets
 train_dataset = datasets.ImageFolder(

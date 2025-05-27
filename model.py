@@ -1,6 +1,16 @@
 # Import dependencies
 import torch
 import torch.nn as nn
+from torchvision.models import resnet50, ResNet50_Weights
+
+# ResNet50 model
+weights = ResNet50_Weights.DEFAULT
+RN50 = resnet50(weights=weights)
+# Modify the last layer for binary classification
+RN50.fc = nn.Sequential(
+    in_features=2048,
+    out_features=1
+)
 
 class CNN(nn.Module): # V5
     def __init__(self):
