@@ -11,7 +11,7 @@ print(f'Launching app.')
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}\n')
 model = CNN().to(device)
-model.load_state_dict(torch.load('models/CNN-4cl+pools-1drop01-notrfs-5e-model.pth'))  # Load model weights
+model.load_state_dict(torch.load('models/CNN-4cl+pools-1drop01-notrfs-5e-model.pth', map_location=torch.device(device)))  # Load model weights
 model.eval()
 print(f'Model loaded.')
 
