@@ -1,4 +1,5 @@
-# Ignore everything in the data folder
+# Ignore everything in the following directories
+/.idea/
+/__pycache__/
 /data/
-# Ignore everything in the outputs folder
 /outputs/
